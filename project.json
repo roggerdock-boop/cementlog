@@ -1,0 +1,22 @@
+{
+  "overview": "CementHub is a professional cement industry knowledge platform where engineers and plant operators can browse technical articles, search by category, and stay current with operational best practices. Features a full admin dashboard for content management.",
+  "features": [
+    "Public article browsing with category filtering",
+    "Full-text search across articles",
+    "Article detail pages with view tracking",
+    "Popular and latest article sections",
+    "Admin dashboard with login protection",
+    "Create, edit, and delete articles from admin",
+    "Mobile-responsive layout",
+    "5 categories: RawMill, CementMill, Kiln, AFR, EnergyOptimization"
+  ],
+  "category": "blog",
+  "tags": [
+    "cement",
+    "blog",
+    "knowledge-platform",
+    "admin",
+    "content-management"
+  ],
+  "last_updated": "2026-05-05T12:04:09.022Z"
+}

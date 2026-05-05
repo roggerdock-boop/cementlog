@@ -1,0 +1,64 @@
+// Version: 1.0.0
+type ArticleId__678690314 = Nat;
+type ArticleId__865064574 = ArticleId__678690314;
+type ArticleInternal__990062961 =
+  {
+    var authorName : Text;
+    var category : Category__213079788;
+    var content : Text;
+    var excerpt : Text;
+    var featuredImageUrl : ?Text;
+    id : ArticleId__865064574;
+    var lastUpdated : Timestamp__244059318;
+    var metaDescription : Text;
+    var publishDate : Timestamp__244059318;
+    var slug : Text;
+    var status : ArticleStatus__766823831;
+    var title : Text;
+    var viewCount : Nat
+  };
+type ArticleStatus__1034467482 = {#draft; #published};
+type ArticleStatus__766823831 = ArticleStatus__1034467482;
+type Category__213079788 = Category__936342486;
+type Category__936342486 =
+  {#AFR; #CementMill; #EnergyOptimization; #Kiln; #RawMill};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Map__158565046<K, V> = Map__297112838<K, V>;
+type Map__297112838<K, V> =
+  {var root : Node__46230540<K, V>; var size : Nat__490723111};
+type Map__605269027<K, V> = Map__158565046<K, V>;
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type Timestamp__244059318 = Timestamp__301639476;
+type Timestamp__301639476 = Int;
+type UserRole__1073662873 = {#admin; #guest; #user};
+actor {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__605269027<Principal, UserRole__1073662873>
+    };
+  stable adminPasswordHash : {var value : Text};
+  stable adminUsername : {var value : Text};
+  stable articles :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?ArticleInternal__990062961]];
+      var elementIndex : Nat__490723111
+    };
+  stable articlesById :
+    {
+      var root :
+        Node__46230540<ArticleId__678690314, ArticleInternal__990062961>;
+      var size : Nat__490723111
+    };
+  stable nextArticleId : {var value : Nat};
+  stable sessions :
+    {var root : Node__46230540<Text, Bool>; var size : Nat__490723111}
+};

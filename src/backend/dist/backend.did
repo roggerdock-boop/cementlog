@@ -1,0 +1,130 @@
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type UpdateArticleInput = 
+ record {
+   authorName: text;
+   category: Category;
+   content: text;
+   excerpt: text;
+   featuredImageUrl: opt text;
+   id: ArticleId;
+   metaDescription: text;
+   publishDate: Timestamp;
+   slug: text;
+   status: ArticleStatus;
+   title: text;
+ };
+type Timestamp = int;
+type SortBy = 
+ variant {
+   date;
+   viewCount;
+ };
+type ListArticlesFilter = 
+ record {
+   category: opt Category;
+   page: nat;
+   pageSize: nat;
+   sortBy: SortBy;
+   status: opt ArticleStatus;
+ };
+type CreateArticleInput = 
+ record {
+   authorName: text;
+   category: Category;
+   content: text;
+   excerpt: text;
+   featuredImageUrl: opt text;
+   metaDescription: text;
+   publishDate: Timestamp;
+   slug: text;
+   status: ArticleStatus;
+   title: text;
+ };
+type Category = 
+ variant {
+   AFR;
+   CementMill;
+   EnergyOptimization;
+   Kiln;
+   RawMill;
+ };
+type ArticleStatus = 
+ variant {
+   draft;
+   published;
+ };
+type ArticleListResult = 
+ record {
+   articles: vec Article;
+   page: nat;
+   pageSize: nat;
+   total: nat;
+ };
+type ArticleId = nat;
+type Article = 
+ record {
+   authorName: text;
+   category: Category;
+   content: text;
+   excerpt: text;
+   featuredImageUrl: opt text;
+   id: ArticleId;
+   lastUpdated: Timestamp;
+   metaDescription: text;
+   publishDate: Timestamp;
+   slug: text;
+   status: ArticleStatus;
+   title: text;
+   viewCount: nat;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  _initializeAccessControl: () -> ();
+  adminLogin: (username: text, passwordHash: text) ->
+   (variant {
+      err: text;
+      ok: text;
+    });
+  adminLogout: (token: text) -> ();
+  adminVerifyToken: (token: text) -> (bool) query;
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  createArticle: (token: opt text, input: CreateArticleInput) -> (ArticleId);
+  deleteArticle: (token: opt text, id: ArticleId) -> ();
+  getArticle: (id: ArticleId) -> (opt Article) query;
+  getArticleBySlug: (slug: text) -> (opt Article) query;
+  getCallerUserRole: () -> (UserRole) query;
+  getLatestArticles: (n: nat) -> (vec Article) query;
+  getPopularArticles: (n: nat) -> (vec Article) query;
+  incrementViewCount: (id: ArticleId) -> ();
+  isAdmin: (token: opt text) -> (bool) query;
+  isCallerAdmin: () -> (bool) query;
+  listArticles: (filter: ListArticlesFilter) -> (ArticleListResult) query;
+  searchArticles: (searchTerm: text) -> (vec Article) query;
+  updateArticle: (token: opt text, input: UpdateArticleInput) -> ();
+}
